@@ -27,7 +27,7 @@ config/icon="res://icon.png"
 [autoload]
 
 IDB="*res://singletons/item_database/ItemDatabase.gd"
-Grabber="*res://source/grabber/Grabber.tscn"
+Grabber="*res://singletons/grabber/Grabber.tscn"
 
 [display]
 
