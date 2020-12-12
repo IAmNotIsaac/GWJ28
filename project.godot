@@ -9,13 +9,19 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "RigidBody2D",
+"base": "Node2D",
 "class": "Item",
 "language": "GDScript",
 "path": "res://source/item/Item.gd"
+}, {
+"base": "KinematicBody2D",
+"class": "ItemInterface",
+"language": "GDScript",
+"path": "res://source/item_interface/ItemInterface.gd"
 } ]
 _global_script_class_icons={
-"Item": ""
+"Item": "",
+"ItemInterface": ""
 }
 
 [application]
@@ -28,6 +34,7 @@ config/icon="res://icon.png"
 
 IDB="*res://singletons/item_database/ItemDatabase.gd"
 Grabber="*res://singletons/grabber/Grabber.tscn"
+ExtTools="*res://singletons/ext_tools/ext_tools.gd"
 
 [display]
 
