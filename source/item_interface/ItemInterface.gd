@@ -9,11 +9,13 @@ enum DefaultItems { NONE, STICK, STONE }
 enum CollisionMode { DEFAULT, HOLD }
 
 onready var items := {}
+onready var tween = $Tween
 
 var follow_mouse := false
 var last_attach_point := Vector2.ZERO
 var velocity := Vector2.ZERO
 var gravity := 0
+var wasnt_on_floor := false
 
 export (DefaultItems) var default_item : int = DefaultItems.NONE
 
@@ -31,14 +33,21 @@ func _physics_process(delta) -> void:
 	if follow_mouse:
 		velocity = (global_position - get_global_mouse_position()) * -1 * 25
 	
-	move_and_slide(velocity)
+	move_and_slide(velocity, Vector2.UP)
 	
 	velocity.y = min(velocity.y + gravity, 500)
 	
-	velocity.x = lerp(velocity.x, 0, 0.04)
+	if is_on_floor():
+		velocity.x = 0
+		if wasnt_on_floor:
+			event(IDB.Events.ON_LAND)
+			wasnt_on_floor = false
+	else:
+		wasnt_on_floor = true
+		velocity.x = lerp(velocity.x, 0, 0.02)
 	
-	if is_on_wall() && !follow_mouse:
-		velocity.x *= -1
+	if is_on_wall():
+		velocity.x /= 2 * -1
 
 
 
@@ -73,9 +82,9 @@ func add_item(item : Item) -> void:
 		"sprite" : sprite
 	}
 	
-	sprite.position = last_attach_point
-	collision_shape.position = last_attach_point
-	mouse_area.position = last_attach_point
+	sprite.position = last_attach_point - item.data.anchor_point * min(len(items) - 1, 1)
+	collision_shape.position = last_attach_point - item.data.anchor_point * min(len(items) - 1, 1)
+	mouse_area.position = last_attach_point - item.data.anchor_point * min(len(items) - 1, 1)
 	
 	last_attach_point += item.data.attach_point
 	gravity += item.data.gravity
@@ -146,3 +155,42 @@ func area_exited(area : Area2D) -> void:
 	if area.is_in_group("grabber"):
 		if is_object_in_area(area):
 			disable_glow()
+
+
+
+func _input(event) -> void:
+	if event.is_action_pressed("utilise"):
+		event(IDB.Events.ON_UTILISE)
+
+
+
+func event(event : int) -> void:
+	for i in len(items):
+		var item = items.keys()[i]
+		
+		for event_check in item.data.properties:
+			if event == event_check:
+				for result_check in item.data.properties.get(event_check):
+					var result = result_check
+					
+					for condition in item.data.properties.get(event_check).get(result_check):
+						if condition(condition, {"index": i}):
+							result(result)
+
+
+
+func condition(condition : int, args := {}) -> bool:
+	match condition:
+		IDB.Conditions.NONE : return true
+		IDB.Conditions.IF_BASE : if args.index == 0: return true
+		IDB.Conditions.IF_HELD : if follow_mouse: return true
+		_ : print("Unexpected condition: %s" % [condition])
+	
+	return false
+
+
+
+func result(result : int) -> void:
+	match result:
+		IDB.Results.DO_SWING: pass
+		IDB.Results.DO_STOMP: pass
