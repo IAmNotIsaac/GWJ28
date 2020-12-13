@@ -5,4 +5,4 @@
 [node name="ItemInterface" type="KinematicBody2D"]
 script = ExtResource( 2 )
 
-[node name="Tween" type="Tween" parent="."]
+[node name="SwingTwing" type="Tween" parent="."]

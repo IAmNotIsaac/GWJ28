@@ -9,7 +9,7 @@ enum DefaultItems { NONE, STICK, STONE }
 enum CollisionMode { DEFAULT, HOLD }
 
 onready var items := {}
-onready var tween = $Tween
+onready var swing_tween = $SwingTwing
 
 var follow_mouse := false
 var last_attach_point := Vector2.ZERO
@@ -48,6 +48,9 @@ func _physics_process(delta) -> void:
 	
 	if is_on_wall():
 		velocity.x /= 2 * -1
+	
+	if is_on_ceiling():
+		velocity.y /= 2 * -1
 
 
 
@@ -161,6 +164,8 @@ func area_exited(area : Area2D) -> void:
 func _input(event) -> void:
 	if event.is_action_pressed("utilise"):
 		event(IDB.Events.ON_UTILISE)
+	if event.is_action_pressed("alt_utilise"):
+		event(IDB.Events.ON_ALT_UTILISE)
 
 
 
@@ -168,14 +173,19 @@ func event(event : int) -> void:
 	for i in len(items):
 		var item = items.keys()[i]
 		
-		for event_check in item.data.properties:
+		for event_check in item.data.events:
 			if event == event_check:
-				for result_check in item.data.properties.get(event_check):
+				for result_check in item.data.events.get(event_check):
 					var result = result_check
+					var condition_met := true
 					
-					for condition in item.data.properties.get(event_check).get(result_check):
-						if condition(condition, {"index": i}):
-							result(result)
+					for condition in item.data.events.get(event_check).get(result_check):
+						if !condition(condition, { "item" : item, "index" : i}):
+							condition_met = false
+							break
+					
+					if condition_met:
+						result(result, { "item" : items.values()[i] })
 
 
 
@@ -184,13 +194,32 @@ func condition(condition : int, args := {}) -> bool:
 		IDB.Conditions.NONE : return true
 		IDB.Conditions.IF_BASE : if args.index == 0: return true
 		IDB.Conditions.IF_HELD : if follow_mouse: return true
+		IDB.Conditions.IS_ON_LEFT_WALL : if is_on_wall() && velocity.x > 0: return true
+		IDB.Conditions.IS_ON_RIGHT_WALL : if is_on_wall() && velocity.x < 0: return true
 		_ : print("Unexpected condition: %s" % [condition])
 	
 	return false
 
 
 
-func result(result : int) -> void:
+func result(result : int, args := {}) -> void:
 	match result:
-		IDB.Results.DO_SWING: pass
+		IDB.Results.DO_SWING_LEFT:
+			event(IDB.Events.ON_SWING_LEFT)
+			swing_tween.stop_all()
+			swing_tween.interpolate_property(self, "rotation_degrees", 210, 360, 1, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
+			swing_tween.start()
+		
+		IDB.Results.DO_SWING_RIGHT:
+			event(IDB.Events.ON_SWING_RIGHT)
+			swing_tween.stop_all()
+			swing_tween.interpolate_property(self, "rotation_degrees", 150, 0, 1, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
+			swing_tween.start()
+		
+		IDB.Results.DO_THWAP_LEFT:
+			ParticlesManager.play_particles("ThwapLeft", args.item.sprite.global_position + Vector2(-16, 0))
+		
+		IDB.Results.DO_THWAP_RIGHT:
+			ParticlesManager.play_particles("ThwapRight", args.item.sprite.global_position + Vector2(16, 0))
+		
 		IDB.Results.DO_STOMP: pass

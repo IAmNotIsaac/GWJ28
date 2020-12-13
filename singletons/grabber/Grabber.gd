@@ -16,7 +16,7 @@ func _input(event) -> void:
 	# Grab item
 	if event.is_action_pressed("grab_item"):
 		var closest_body : ItemInterface
-		var closest_distance : int = 4926
+		var closest_distance : int = 4096
 		
 		for body in get_overlapping_bodies():
 			if body is ItemInterface:
@@ -42,7 +42,7 @@ func _input(event) -> void:
 	# Fuse item
 	if event.is_action_pressed("fuse_item") && held_item != null:
 		var closest_body : ItemInterface
-		var closest_distance : int = 4926
+		var closest_distance : int = 4096
 		
 		for body in get_overlapping_bodies():
 			if body is ItemInterface:
