@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/mouth.png-3da6c45cecf3d941eaa2dad7c5dfd032.stex"
+path="res://.import/lighter.png-356ef98f9c8215dd6ff6e35d760671a2.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/egg/mouth.png"
-dest_files=[ "res://.import/mouth.png-3da6c45cecf3d941eaa2dad7c5dfd032.stex" ]
+source_file="res://assets/items/lighter.png"
+dest_files=[ "res://.import/lighter.png-356ef98f9c8215dd6ff6e35d760671a2.stex" ]
 
 [params]
 

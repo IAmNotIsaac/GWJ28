@@ -3,12 +3,13 @@ extends Node2D
 
 
 onready var particle_presets := {
-	"ThwapLeft" : {
-		"node" : $ThwapLeft,
+	"Thwap" : {
+		"node" : $Thwap,
 		"leeway" : 2
 	},
-	"ThwapRight" : {
-		"node" : $ThwapRight,
+	
+	"FlameBurst" : {
+		"node" : $FlameBurst,
 		"leeway" : 2
 	}
 }
@@ -35,7 +36,7 @@ func play_particles(preset : String, set_position := Vector2.ZERO) -> void:
 			particles.queue_free()
 	
 	else:
-		print("Preset not found.")
+		print("Particle preset not found: %s." % [preset])
 
 
 

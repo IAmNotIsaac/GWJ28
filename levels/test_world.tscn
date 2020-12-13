@@ -1,12 +1,16 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://icon.png" type="Texture" id=1]
 [ext_resource path="res://source/item_interface/ItemInterface.tscn" type="PackedScene" id=2]
+[ext_resource path="res://source/egg/Egg.tscn" type="PackedScene" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 360, 360 )
 
 [node name="World" type="Node2D"]
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 collision_layer = 5
@@ -61,7 +65,27 @@ current = true
 zoom = Vector2( 0.5, 0.5 )
 
 [node name="ItemInterface" parent="." instance=ExtResource( 2 )]
+position = Vector2( -135.818, 38.1637 )
+default_item = 1
+
+[node name="ItemInterface3" parent="." instance=ExtResource( 2 )]
+position = Vector2( 219.441, 19.6431 )
+default_item = 1
+
+[node name="ItemInterface6" parent="." instance=ExtResource( 2 )]
+position = Vector2( 179.078, 49.4949 )
+default_item = 1
+
+[node name="ItemInterface4" parent="." instance=ExtResource( 2 )]
+position = Vector2( 102.144, 40.4086 )
 default_item = 1
 
 [node name="ItemInterface2" parent="." instance=ExtResource( 2 )]
+position = Vector2( -188.574, 36.48 )
+default_item = 1
+
+[node name="ItemInterface5" parent="." instance=ExtResource( 2 )]
+position = Vector2( -241.329, 53.3169 )
 default_item = 2
+
+[node name="Egg" parent="." instance=ExtResource( 3 )]

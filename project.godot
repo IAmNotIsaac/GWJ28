@@ -36,6 +36,7 @@ IDB="*res://singletons/item_database/ItemDatabase.gd"
 Grabber="*res://singletons/grabber/Grabber.tscn"
 ExtTools="*res://singletons/ext_tools/ext_tools.gd"
 ParticlesManager="*res://singletons/particles/ParticlesManager.tscn"
+WorldEvents="*res://singletons/world_events/WorldEvents.gd"
 
 [display]
 
@@ -57,12 +58,12 @@ fuse_item={
 }
 utilise={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":32,"unicode":0,"echo":false,"script":null)
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":81,"unicode":0,"echo":false,"script":null)
  ]
 }
 alt_utilise={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777218,"unicode":0,"echo":false,"script":null)
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":69,"unicode":0,"echo":false,"script":null)
  ]
 }
 
