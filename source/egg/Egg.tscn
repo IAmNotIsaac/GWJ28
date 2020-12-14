@@ -26,7 +26,9 @@ texture = ExtResource( 1 )
 hframes = 2
 frame = 1
 
-[node name="CrackArea" type="Area2D" parent="."]
+[node name="CrackArea" type="Area2D" parent="." groups=[
+"egg_area",
+]]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="CrackArea"]
 polygon = PoolVector2Array( 0, -136, -64, -112, -88, -72, -104, 0, -104, 64, -64, 120, 0, 136, 64, 120, 104, 64, 104, 0, 88, -72, 64, -112 )

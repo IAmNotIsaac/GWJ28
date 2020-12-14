@@ -64,22 +64,6 @@ texture = ExtResource( 1 )
 current = true
 zoom = Vector2( 0.5, 0.5 )
 
-[node name="ItemInterface" parent="." instance=ExtResource( 2 )]
-position = Vector2( -135.818, 38.1637 )
-default_item = 1
-
-[node name="ItemInterface3" parent="." instance=ExtResource( 2 )]
-position = Vector2( 219.441, 19.6431 )
-default_item = 1
-
-[node name="ItemInterface6" parent="." instance=ExtResource( 2 )]
-position = Vector2( 179.078, 49.4949 )
-default_item = 1
-
-[node name="ItemInterface4" parent="." instance=ExtResource( 2 )]
-position = Vector2( 102.144, 40.4086 )
-default_item = 1
-
 [node name="ItemInterface2" parent="." instance=ExtResource( 2 )]
 position = Vector2( -188.574, 36.48 )
 default_item = 1

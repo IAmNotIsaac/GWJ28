@@ -201,7 +201,7 @@ func event(event : int) -> void:
 					var condition_met := true
 					
 					for condition in item.data.events.get(event_check).get(result_check):
-						if !condition(condition, { "item" : item, "index" : i }):
+						if !condition(condition, { "item" : items, "pieces" : items.values()[i], "index" : i }):
 							condition_met = false
 							break
 					
@@ -215,7 +215,8 @@ func condition(condition : int, args := {}) -> bool:
 		IDB.Conditions.NONE : return true
 		IDB.Conditions.IF_BASE : if args.index == 0: return true
 		IDB.Conditions.IF_HELD : if follow_mouse: return true
-		IDB.Conditions.IS_COLLIDING : if is_on_wall() || is_on_floor() || is_on_ceiling(): return true
+		IDB.Conditions.IF_COLLIDING : if is_on_wall() || is_on_floor() || is_on_ceiling(): return true
+		IDB.Conditions.IF_ON_EGG : for area in args.pieces.mouse_area.get_overlapping_areas(): if area.is_in_group("egg_area"): return true
 		_ : print("Unexpected condition: %s" % [condition])
 	
 	return false

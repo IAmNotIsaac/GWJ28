@@ -4,7 +4,7 @@ extends Node
 
 enum Events { ON_UTILISE, ON_ALT_UTILISE, ON_LAND, ON_SWING_LEFT, ON_SWING_RIGHT }
 enum Results { DO_SWING_LEFT, DO_SWING_RIGHT, DO_THWAP, DO_FLAME, SPAWN_ITEM, DELETE_MYSELF }
-enum Conditions { NONE, IF_BASE, IF_HELD, IS_COLLIDING }
+enum Conditions { NONE, IF_BASE, IF_HELD, IF_COLLIDING, IF_ON_EGG }
 
 # Must be in order: { Events } : { Results } : [ Conditions ]
 #
@@ -23,7 +23,7 @@ var items := {
 	"stone" : {
 		"texture" : preload("res://assets/items/stone.png"),
 		"gravity" : 18,
-		"events" : { Events.ON_LAND : { Results.DO_THWAP : [Conditions.IF_BASE] }, Events.ON_SWING_LEFT : { Results.DO_THWAP : [Conditions.IS_COLLIDING] }, Events.ON_SWING_RIGHT : { Results.DO_THWAP : [Conditions.IS_COLLIDING] } },
+		"events" : { Events.ON_LAND : { Results.DO_THWAP : [Conditions.IF_BASE, Conditions.IF_ON_EGG] }, Events.ON_SWING_LEFT : { Results.DO_THWAP : [Conditions.IF_ON_EGG] }, Events.ON_SWING_RIGHT : { Results.DO_THWAP : [Conditions.IF_ON_EGG] } },
 		"properties" : {}
 	},
 	
