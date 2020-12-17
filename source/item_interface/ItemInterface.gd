@@ -71,7 +71,7 @@ func apply_movement() -> void:
 
 func add_item(item : Item) -> void:
 	var collision_shape := CollisionShape2D.new()
-	var mouse_area := Area2D.new()
+	var area2d := Area2D.new()
 	var sprite := Sprite.new()
 	
 	var dimensions : Vector2 = item.data.texture.get_size()
@@ -81,9 +81,9 @@ func add_item(item : Item) -> void:
 	collision_shape.shape = RectangleShape2D.new()
 	collision_shape.shape.extents = dimensions / 2.0
 	
-	mouse_area.add_child(collision_shape.duplicate())
-#	mouse_area.connect("area_entered", self, "area_entered")
-#	mouse_area.connect("area_exited", self, "area_exited")
+	area2d.add_child(collision_shape.duplicate())
+#	area2d.connect("area_entered", self, "area_entered")
+#	area2d.connect("area_exited", self, "area_exited")
 	
 	sprite.texture = item.data.texture
 	sprite.material = ShaderMaterial.new()
@@ -93,7 +93,7 @@ func add_item(item : Item) -> void:
 	
 	items[item] = {
 		"collision_shape" : collision_shape,
-		"mouse_area" : mouse_area,
+		"area2d" : area2d,
 		"sprite" : sprite
 	}
 	
@@ -109,8 +109,8 @@ func update_items() -> void:
 		if !item.collision_shape.is_inside_tree():
 			add_child(item.collision_shape)
 		
-		if !item.mouse_area.is_inside_tree():
-			add_child(item.mouse_area)
+		if !item.area2d.is_inside_tree():
+			add_child(item.area2d)
 	
 	
 	height = 0
@@ -118,7 +118,7 @@ func update_items() -> void:
 	for item in items.values():
 		item.sprite.position.y = height - item.sprite.texture.get_height() / 2.0
 		item.collision_shape.position.y = height - item.sprite.texture.get_height() / 2.0
-		item.mouse_area.position.y = height - item.sprite.texture.get_height() / 2.0
+		item.area2d.position.y = height - item.sprite.texture.get_height() / 2.0
 		
 		height -= item.sprite.texture.get_height()
 	
@@ -162,7 +162,7 @@ func disable_glow() -> void:
 
 func is_object_in_area(object : Object) -> bool:
 	for item in items.values():
-		if object in item.mouse_area.get_overlapping_bodies() || object in item.mouse_area.get_overlapping_areas():
+		if object in item.area2d.get_overlapping_bodies() || object in item.area2d.get_overlapping_areas():
 			return true
 	return false
 
@@ -201,7 +201,7 @@ func event(event : int) -> void:
 					var condition_met := true
 					
 					for condition in item.data.events.get(event_check).get(result_check):
-						if !condition(condition, { "item" : items, "pieces" : items.values()[i], "index" : i }):
+						if !condition(condition, { "item" : items, "data" : items.values()[i], "index" : i }):
 							condition_met = false
 							break
 					
@@ -217,8 +217,9 @@ func condition(condition : int, args := {}) -> bool:
 		IDB.Conditions.IF_HELD : if follow_mouse: return true
 		IDB.Conditions.IF_COLLIDING : if is_on_wall() || is_on_floor() || is_on_ceiling(): return true
 		IDB.Conditions.IF_ON_EGG :
-			print(args.pieces.mouse_area.get_overlapping_areas())
-			for area in args.pieces.mouse_area.get_overlapping_areas(): if area.is_in_group("egg_area"): return true
+			for area in args.data.area2d.get_overlapping_areas():
+				if area.is_in_group("egg_crack"):
+					return true
 		_ : print("Unexpected condition: %s" % [condition])
 	
 	return false
@@ -228,16 +229,16 @@ func condition(condition : int, args := {}) -> bool:
 func result(result : int, args := {}) -> void:
 	match result:
 		IDB.Results.DO_SWING_LEFT:
+			swing_tween.stop_all()
 			rotation_degrees = 270
 			event(IDB.Events.ON_SWING_LEFT)
-			swing_tween.stop_all()
 			swing_tween.interpolate_property(self, "rotation_degrees", 210, 360, 1, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
 			swing_tween.start()
 		
 		IDB.Results.DO_SWING_RIGHT:
+			swing_tween.stop_all()
 			rotation_degrees = 90
 			event(IDB.Events.ON_SWING_RIGHT)
-			swing_tween.stop_all()
 			swing_tween.interpolate_property(self, "rotation_degrees", 150, 0, 1, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
 			swing_tween.start()
 		
