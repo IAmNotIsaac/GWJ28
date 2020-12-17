@@ -30,7 +30,7 @@ func thwapped(item : Dictionary) -> void:
 			var cancel := false
 			
 			for crack in cracks:
-				if crack.position.distance_to(item.sprite.global_position) < 45:
+				if crack.position.distance_to(item.sprite.global_position) < 454:
 					cancel = true
 					crack.scale = Vector2(min(crack.scale.x + 0.2, 2), min(crack.scale.y + 0.2, 2))
 					break

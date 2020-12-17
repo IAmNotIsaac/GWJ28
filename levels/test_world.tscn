@@ -68,6 +68,22 @@ zoom = Vector2( 0.5, 0.5 )
 position = Vector2( -188.574, 36.48 )
 default_item = 1
 
+[node name="ItemInterface3" parent="." instance=ExtResource( 2 )]
+position = Vector2( -162.757, -44.8985 )
+default_item = 1
+
+[node name="ItemInterface4" parent="." instance=ExtResource( 2 )]
+position = Vector2( -153.216, 53.8781 )
+default_item = 1
+
+[node name="ItemInterface6" parent="." instance=ExtResource( 2 )]
+position = Vector2( -213.268, -66.2253 )
+default_item = 1
+
+[node name="ItemInterface7" parent="." instance=ExtResource( 2 )]
+position = Vector2( -144.237, -80.2561 )
+default_item = 1
+
 [node name="ItemInterface5" parent="." instance=ExtResource( 2 )]
 position = Vector2( -241.329, 53.3169 )
 default_item = 2

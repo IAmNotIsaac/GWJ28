@@ -53,7 +53,7 @@ func apply_movement() -> void:
 	move_and_slide(velocity, Vector2.UP)
 	
 	if is_on_floor():
-		velocity.x = 0
+		velocity.x = lerp(velocity.x, 0, 0.07)
 		if wasnt_on_floor:
 			event(IDB.Events.ON_LAND)
 			wasnt_on_floor = false
@@ -216,7 +216,9 @@ func condition(condition : int, args := {}) -> bool:
 		IDB.Conditions.IF_BASE : if args.index == 0: return true
 		IDB.Conditions.IF_HELD : if follow_mouse: return true
 		IDB.Conditions.IF_COLLIDING : if is_on_wall() || is_on_floor() || is_on_ceiling(): return true
-		IDB.Conditions.IF_ON_EGG : for area in args.pieces.mouse_area.get_overlapping_areas(): if area.is_in_group("egg_area"): return true
+		IDB.Conditions.IF_ON_EGG :
+			print(args.pieces.mouse_area.get_overlapping_areas())
+			for area in args.pieces.mouse_area.get_overlapping_areas(): if area.is_in_group("egg_area"): return true
 		_ : print("Unexpected condition: %s" % [condition])
 	
 	return false
@@ -226,12 +228,14 @@ func condition(condition : int, args := {}) -> bool:
 func result(result : int, args := {}) -> void:
 	match result:
 		IDB.Results.DO_SWING_LEFT:
+			rotation_degrees = 270
 			event(IDB.Events.ON_SWING_LEFT)
 			swing_tween.stop_all()
 			swing_tween.interpolate_property(self, "rotation_degrees", 210, 360, 1, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
 			swing_tween.start()
 		
 		IDB.Results.DO_SWING_RIGHT:
+			rotation_degrees = 90
 			event(IDB.Events.ON_SWING_RIGHT)
 			swing_tween.stop_all()
 			swing_tween.interpolate_property(self, "rotation_degrees", 150, 0, 1, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
